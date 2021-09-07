@@ -1,63 +1,92 @@
-class calculator{
-    public static void main() {
-        
+import java.util.Vector;
+import java.util.Collections;
+import java.util.List;
+
+public class calculator{    
+
+    static Boolean isOperator(char value){
+        Boolean op = false;
+        if(value == '+' ||value == '*' || value == '/' || value == '-')
+            op = true;
+        return op;
     }
-}
 
-vector<string> proc_exp(string expression);
-int compute(vector<string>* expression);
-bool isOperator(char value);
-
-int main(int argc, char const *argv[])
-{
-    string expression = "1+1-2";
-    vector<string>* expList = proc_exp(expression);
-    int value = compute(expList);
-    cout << value <<endl;
+    static Vector<String> proc_exp(String expression){
+        Vector<String> expressionList = new Vector<String>();
+        String number = "";
+        Boolean numberStored = false;
     
-    return 0;
-}
-
-vector<string>* proc_exp(string expression){
-    vector<string>* expressionList;
-    int pos = 0;
-    string number = "";
-    bool numberStored = false;
-
-    for(int pos = 0;pos < expression.size();pos++){
-        if(isOperator(expression.at(pos)) && numberStored){
-            expressionList->push_back(number);
-            string op(1,expression.at(pos));
-            expressionList->push_back(op);
-            pos++;
-            
-            numberStored = false;
-            number = "";
+        for(int pos = 0;pos < expression.length();pos++){
+            if(isOperator(expression.charAt(pos)) && numberStored){
+                expressionList.add(number);
+                String op = String.valueOf(expression.charAt(pos));
+                expressionList.add(op);
+                
+                numberStored = false;
+                number = "";
+            }
+            else if(isOperator(expression.charAt(pos)) && !numberStored){
+                String op = String.valueOf(expression.charAt(pos));
+                expressionList.add(op);
+            }
+            else{
+                numberStored = true;
+                number += expression.charAt(pos);
+            } 
         }
-        else if(isOperator(expression.at(pos)) && !numberStored){
-            string op(1,expression.at(pos));            
-            expressionList->push_back(op);
-            pos++;
-        }
-        else{
-            numberStored = true;
-            number += expression.at(pos);
-        } 
+
+
+    
+        if(numberStored)
+            expressionList.add(number);
+    
+        return expressionList;
     }
 
-    if(numberStored)
-        expressionList->push_back(number);
+    static int compute(Vector<String> expression){
 
-    return expressionList;
-}
+        for(int pos = 0;pos < expression.size();pos++){
+            if(expression.get(pos) == "+"){
+                return compute(sub(expression,0,pos-1)) + compute(sub(expression,pos+1,expression.size()-1));
+            }else if(expression.get(pos) == "-"){
+             return compute(sub(expression,pos+1,expression.size()-1)) - compute(sub(expression,0,pos-1));
+            }else{
+                //do nothing
+            }
+        }
+    
+        for(int pos = 0;pos < expression.size();pos++){
+            if(expression.get(pos) == "*"){
+                return compute(sub(expression,0,pos-1)) * compute(sub(expression,pos+1,expression.size()-1));
+            }else if(expression.get(pos) == "/"){
+             return compute(sub(expression,pos+1,expression.size()-1)) / compute(sub(expression,0,pos-1));
+            }else{
+                //do nothing
+            }
+        }
+    
+        return Integer.parseInt(expression.get(0));
+    }
+    
+    /**
+     * Inclusion Subvector
+     * 
+     **/
+    static Vector<String> sub(Vector<String> v, int m, int n) {
+        Vector<String> newvec = new Vector<String>();
+        List<String> temp = v.subList(m, n);
+        for(int i = 0;i < temp.size();i++){
+            newvec.add(temp.get(i));
+        }
 
-bool isOperator(char value){
-    bool op = false;
-    if(value == '+' ||value == '*' || value == '/' || value == '-')
-        op = true;
-    return op;
-}
+        return newvec;
+    }
+    public static void main(String[] args) {
+        String expression = "2+3";
+        Vector<String> expList = proc_exp(expression);
+        Collections.reverse(expList);
 
-int compute(string* expression){
-    return 0;
+        int value = compute(expList);
+        System.out.println(value);    
+    }
 }
