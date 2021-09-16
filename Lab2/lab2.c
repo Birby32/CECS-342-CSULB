@@ -36,16 +36,17 @@ int lex();
 
 /******************************************************/
 /* main driver */
-main() {
-    /* Open the input data file and process its contents */
+int main() {
+/* Open the input data file and process its contents */
     if ((in_fp = fopen("front.txt", "r")) == NULL)
         printf("ERROR - cannot open front.in \n");
     else {
         getChar();
         do {
             lex();
-        } while (nextToken != ____________);
+        } while (nextToken != EOF);
     }
+    return 0;
 }
 
 /*****************************************************/
@@ -54,15 +55,35 @@ and return the token */
 int lookup(char ch) {
     switch (ch) {
         case '(':
-        addChar();
-        nextToken = LEFT_PAREN;
-        break;
+            addChar();
+            nextToken = LEFT_PAREN;
+            break;
         case ')':
-        addChar();
-        nextToken = RIGHT_PAREN;
-        break;
+            addChar();
+            nextToken = RIGHT_PAREN;
+            break;
         //YOUR CODE
-    }
+        case '+':
+            addChar();
+            nextToken = ADD_OP;
+            break;
+        case '-':
+            addChar();
+            nextToken = SUB_OP;
+            break;
+        case '*':
+            addChar();
+            nextToken = MULT_OP;
+            break;
+        case '/':
+            addChar();
+            nextToken = DIV_OP;
+            break;
+        default:
+            addChar();
+            nextToken = EOF;
+            break;
+        }
     return nextToken;
 }
 
@@ -71,8 +92,9 @@ int lookup(char ch) {
 void addChar() {
     if (lexLen <= 98) {
         //YOUR CODE
-    }
-    else
+        lexeme[lexLen++] = nextChar;
+        lexeme[lexLen] = '\0';
+    }else
         printf("Error - lexeme is too long \n");
 }
 
@@ -82,12 +104,15 @@ input and determine its character class */
 void getChar() {
     if ((nextChar = getc(in_fp)) != EOF) {
         if (isalpha(nextChar))
-            charClass = LETTER;
-        else if(nextChar) // create statement here
-            return; //YOUR CODE
+        charClass = LETTER;
+        else if (isdigit(nextChar))
+            //YOUR CODE
+            charClass = DIGIT;
         else 
-            return; // YOUR CODE;
-    }else
+            // YOUR CODE;
+            charClass = UNKNOWN;
+    }
+    else
         charClass = EOF;
 }
 
@@ -117,14 +142,23 @@ int lex() {
             }
             nextToken = IDENT;
             break;
-            /* Parse integer literals */
+        /* Parse integer literals */
             //YOUR CODE
-            /* Parentheses and operators */
+        /* Parentheses and operators */
+        case DIGIT:
+            addChar();
+            getChar();
+            while(charClass == DIGIT){
+                addChar();
+                getChar();
+            }
+            nextToken =INT_LIT;
             break;
         case UNKNOWN:
-            //YOUR CODE
+        //YOUR CODE
+            lookup(nextChar);
+            getChar();
             break;
-            /* EOF */
         case EOF:
             nextToken = EOF;
             lexeme[0] = 'E';
