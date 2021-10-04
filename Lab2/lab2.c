@@ -63,14 +63,14 @@ int lookup(char ch) {
             nextToken = RIGHT_PAREN;
             break;
         //YOUR CODE
-        case '+':
-            addChar();
-            nextToken = ADD_OP;
-            break;
         case '-':
             addChar();
             nextToken = SUB_OP;
             break;
+        case '+':
+            addChar();
+            nextToken = ADD_OP;
+            break;            
         case '*':
             addChar();
             nextToken = MULT_OP;
