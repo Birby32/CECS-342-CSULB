@@ -89,12 +89,16 @@ int main() {
     struct HourlyEmployee *pHourlyEmployee = (struct HourlyEmployee *) malloc(sizeof(struct HourlyEmployee));
     //Consturct pHourlyEmployee
     //Input hourly rate and hours
-
     employee = (struct Employee *) pHourlyEmployee;
     //Do the same for other employee types
     employee->age = age;
     ((void (*)(struct Employee *)) employee->vtable[0])((struct Employee *) employee);
     //  ………………………………………………….
+    struct CommissionEmployee *pCommisionEmployee = (struct CommissionEmployee *) malloc(sizeof(struct CommissionEmployee));
+    employee = (struct Employee*) pCommisionEmployee; 
+    employee->age = age;
+    ((void (*)(struct Employee *)) employee->vtable[0])((struct Employee *) employee);
+    
     return 0;
 }
 // TODO: Not sure why this is here
