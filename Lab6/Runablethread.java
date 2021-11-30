@@ -12,7 +12,7 @@ public class Runablethread implements Runnable{
         try {
             for(int i = start; i < start+ 250;i++){
                 if(i == key)
-                    System.out.println("Found value "+i+" in thread.");
+                    System.out.println("Found value "+i+" in thread");
             }
         }
         catch (Exception e) {

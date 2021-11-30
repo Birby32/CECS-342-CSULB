@@ -7,16 +7,22 @@ public class Multithread {
     public static void main(String[] args){
         int RANDOM_VALUE = new Random().nextInt(1000);
         System.out.println("Random Value :"+RANDOM_VALUE);
-        MultithreadingDemo thread1 = new MultithreadingDemo(0,RANDOM_VALUE);
+        System.out.println("------- PART 1 -------");
+        Threading thread1 = new Threading(0,RANDOM_VALUE);
         thread1.start();
-        MultithreadingDemo thread2 = new MultithreadingDemo(250,RANDOM_VALUE);
+        Threading thread2 = new Threading(250,RANDOM_VALUE);
         thread2.start();
-        MultithreadingDemo thread3 = new MultithreadingDemo(500,RANDOM_VALUE);
+        Threading thread3 = new Threading(500,RANDOM_VALUE);
         thread3.start();
-        MultithreadingDemo thread4 = new MultithreadingDemo(750,RANDOM_VALUE);
+        Threading thread4 = new Threading(750,RANDOM_VALUE);
         thread4.start();
-        
-        //Runnable Thread
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        //Part 2
+        System.out.println("------- PART 2 -------");
         Runablethread rthread1 = new Runablethread(0,RANDOM_VALUE);
         Thread myThread1 = new Thread(rthread1);
         myThread1.start();
@@ -32,5 +38,24 @@ public class Multithread {
         Runablethread rthread4 = new Runablethread(750,RANDOM_VALUE);
         Thread myThread4 = new Thread(rthread4);
         myThread4.start();
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // Part 3 
+        System.out.println("------- PART 3 -------");
+        monitorThread mThread = new monitorThread();
+        Finder fThread1 = new Finder(0,RANDOM_VALUE,mThread);
+        Finder fThread2 = new Finder(250,RANDOM_VALUE,mThread);
+        Finder fThread3 = new Finder(500,RANDOM_VALUE,mThread);
+        Finder fThread4 = new Finder(750,RANDOM_VALUE,mThread);
+        mThread.start();
+
+        mThread.addThread(fThread1);
+        mThread.addThread(fThread2);
+        mThread.addThread(fThread3);
+        mThread.addThread(fThread4);
     }
 }

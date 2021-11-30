@@ -1,10 +1,9 @@
 package Lab6;
-// Java code for thread creation by extending
-// the Thread class
-class MultithreadingDemo extends Thread {
+
+class Threading extends Thread {
     int start;
     int key;
-    MultithreadingDemo(int start,int key){
+    Threading(int start,int key){
         this.start = start;
         this.key = key;
     }
